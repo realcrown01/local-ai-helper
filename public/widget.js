@@ -4,7 +4,10 @@
   var currentScript = scripts[scripts.length - 1];
   var siteId = currentScript.getAttribute('data-site-id') || 'default';
 
-  var API_BASE = window.location.origin || 'http://localhost:3000';
+  // Get API base from the script URL (e.g. https://your-app.onrender.com/widget.js)
+  var scriptSrc = currentScript.src;
+  var API_BASE = scriptSrc.split('/').slice(0, 3).join('/'); // protocol + host
+
 
 
   // ---- Styles ----
