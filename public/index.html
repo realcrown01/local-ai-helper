@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>John's Plumbing AI Assistant (Demo)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    #chat {
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+    .msg {
+      margin: 5px 0;
+      padding: 6px 8px;
+      border-radius: 6px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+    .user {
+      background: #e0f7ff;
+      text-align: right;
+    }
+    .bot {
+      background: #f0f0f0;
+      text-align: left;
+    }
+    #inputRow {
+      display: flex;
+      gap: 8px;
+    }
+    #messageInput {
+      flex: 1;
+      padding: 8px;
+      font-size: 14px;
+    }
+    #sendBtn {
+      padding: 8px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>John's Plumbing AI Assistant</h1>
+
+  <div id="chat"></div>
+
+  <div id="inputRow">
+    <input id="messageInput" type="text" placeholder="Ask about plumbing or request a visit..." />
+    <button id="sendBtn">Send</button>
+  </div>
+
+  <script>
+    const chatEl = document.getElementById('chat');
+    const inputEl = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Store full conversation history to send to backend
+    let history = [];
+
+    function addMessage(text, sender) {
+      const div = document.createElement('div');
+      div.classList.add('msg', sender);
+      div.textContent = text;
+      chatEl.appendChild(div);
+      chatEl.scrollTop = chatEl.scrollHeight;
+    }
+
+    async function sendMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+
+      // Show user message in UI
+      addMessage(text, 'user');
+
+      // Add to history
+      history.push({ role: 'user', content: text });
+
+      inputEl.value = '';
+      inputEl.focus();
+
+      try {
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text, history }),
+        });
+
+        const data = await res.json();
+        if (data.reply) {
+          addMessage(data.reply, 'bot');
+          history.push({ role: 'assistant', content: data.reply });
+        } else {
+          addMessage('Error: no reply from server.', 'bot');
+        }
+      } catch (err) {
+        console.error(err);
+        addMessage('Error contacting server.', 'bot');
+      }
+    }
+
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    // Greet user on load and add to history
+    const greeting =
+      "Hi! I'm the John's Plumbing assistant. Tell me your plumbing issue, and I'll help schedule a visit.\nI'll need your name, phone number, zip code, and a brief description of the problem.";
+    addMessage(greeting, 'bot');
+    history.push({ role: 'assistant', content: greeting });
+  </script>
+</body>
+</html>

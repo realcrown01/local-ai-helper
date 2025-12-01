@@ -1,0 +1,45 @@
+{
+  "demo-plumber": {
+    "name": "John's Plumbing",
+    "location": "Springfield and nearby areas within 20 miles.",
+    "services": [
+      "Drain cleaning",
+      "Pipe repair",
+      "Water heater installation and repair",
+      "Emergency plumbing"
+    ],
+    "pricing": {
+      "drain_cleaning": "Starts at $120",
+      "pipe_repair": "Starts at $180",
+      "water_heater_install": "$800–$1500 typical range"
+    },
+    "hours": "Mon–Fri: 8am–6pm, Sat: 9am–2pm, Sun: Emergency only",
+    "rules": [
+      "We never promise exact pricing without seeing the job.",
+      "We aim for same-day service if contacted before 3pm."
+    ],
+    "leadFile": "leads_demo_plumber.json"
+  },
+
+  "roofing-pros": {
+    "name": "Roofing Pros",
+    "location": "Austin, TX",
+    "services": [
+      "Roof inspections",
+      "Shingle repair",
+      "Full roof installation",
+      "Emergency tarping"
+    ],
+    "pricing": {
+      "inspection": "$99",
+      "shingle_repair": "Starts at $250",
+      "full_install": "$7,000–$15,000"
+    },
+    "hours": "Mon–Sat: 7am–6pm",
+    "rules": [
+      "We provide written estimates after inspection.",
+      "Emergency services cost extra."
+    ],
+    "leadFile": "leads_roofing_pros.json"
+  }
+}
