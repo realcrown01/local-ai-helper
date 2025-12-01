@@ -2,124 +2,164 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>John's Plumbing AI Assistant (Demo)</title>
+  <title>Local AI Web Helper</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 40px auto;
+      margin: 0;
+      background: #f5f7fb;
+      color: #222;
+    }
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 20px 24px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    main {
+      padding: 30px 24px 60px;
     }
     h1 {
-      text-align: center;
-    }
-    #chat {
-      border: 1px solid #ccc;
-      padding: 10px;
-      height: 400px;
-      overflow-y: auto;
+      font-size: 32px;
       margin-bottom: 10px;
-      background: #fafafa;
     }
-    .msg {
-      margin: 5px 0;
-      padding: 6px 8px;
-      border-radius: 6px;
-      line-height: 1.4;
-      white-space: pre-wrap;
+    .subtitle {
+      font-size: 16px;
+      color: #4b5563;
+      margin-bottom: 24px;
     }
-    .user {
-      background: #e0f7ff;
-      text-align: right;
+    .section {
+      margin-bottom: 32px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
     }
-    .bot {
-      background: #f0f0f0;
-      text-align: left;
+    .section h2 {
+      margin-top: 0;
+      font-size: 20px;
     }
-    #inputRow {
-      display: flex;
-      gap: 8px;
+    ul {
+      padding-left: 20px;
     }
-    #messageInput {
-      flex: 1;
-      padding: 8px;
+    .code-box {
+      background: #0f172a;
+      color: #e5e7eb;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      overflow-x: auto;
+    }
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 12px;
+      margin-right: 6px;
+      margin-bottom: 6px;
+    }
+    .cta {
+      display: inline-block;
+      background: #2563eb;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
       font-size: 14px;
+      margin-top: 10px;
     }
-    #sendBtn {
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
+    .cta:hover {
+      background: #1d4ed8;
+    }
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #6b7280;
+      padding: 20px 0 30px;
     }
   </style>
 </head>
 <body>
-  <h1>John's Plumbing AI Assistant</h1>
+  <header>
+    <div class="container">
+      <div class="logo">Local AI Web Helper</div>
+    </div>
+  </header>
 
-  <div id="chat"></div>
+  <main>
+    <div class="container">
+      <div class="section">
+        <h1>24/7 AI Website Assistant for Local Service Businesses</h1>
+        <div class="subtitle">
+          Turn website visitors into booked jobs. Capture name, phone, location, and issue
+          automatically, and send warm leads straight to the business.
+        </div>
+        <div>
+          <span class="pill">Plumbers</span>
+          <span class="pill">Roofers</span>
+          <span class="pill">HVAC</span>
+          <span class="pill">Electricians</span>
+          <span class="pill">Any local service</span>
+        </div>
+        <a class="cta" href="#demo">Try the live demo</a>
+      </div>
 
-  <div id="inputRow">
-    <input id="messageInput" type="text" placeholder="Ask about plumbing or request a visit..." />
-    <button id="sendBtn">Send</button>
-  </div>
+      <div class="section">
+        <h2>How it works</h2>
+        <ul>
+          <li>AI chat widget sits on the bottom-right of your website.</li>
+          <li>It asks the right questions: name, phone, zip, and problem.</li>
+          <li>Leads are saved and visible in a simple dashboard.</li>
+          <li>Each business gets its own configuration and lead list.</li>
+        </ul>
+      </div>
 
-  <script>
-    const chatEl = document.getElementById('chat');
-    const inputEl = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
+      <div class="section" id="demo">
+        <h2>Live demo: John's Plumbing</h2>
+        <p>Use the chat bubble in the bottom-right corner to talk to the assistant as if you were a customer.</p>
+        <p>Ask something like: “My name is Alex, my phone is 555-555-5555, I'm in zip 12345, and I have a leaking pipe under my kitchen sink.”</p>
+      </div>
 
-    // Store full conversation history to send to backend
-    let history = [];
+      <div class="section">
+        <h2>Install on any website with one script</h2>
+        <p>Drop this snippet into your site’s HTML, just before <code>&lt;/body&gt;</code>:</p>
+        <div class="code-box">
+          &lt;script<br />
+          &nbsp;&nbsp;src="https://local-ai-helper.onrender.com/widget.js"<br />
+          &nbsp;&nbsp;data-site-id="YOUR-BUSINESS-ID"&gt;<br />
+          &lt;/script&gt;
+        </div>
+        <p style="font-size: 13px; color:#6b7280; margin-top:8px;">
+          Example: use <code>demo-plumber</code> or <code>roofing-pros</code> as a demo business id.
+        </p>
+      </div>
 
-    function addMessage(text, sender) {
-      const div = document.createElement('div');
-      div.classList.add('msg', sender);
-      div.textContent = text;
-      chatEl.appendChild(div);
-      chatEl.scrollTop = chatEl.scrollHeight;
-    }
+      <div class="section">
+        <h2>Interested?</h2>
+        <p>If you're a local business owner and want this added to your website, reach out and we can set up a demo and installation.</p>
+      </div>
+    </div>
+  </main>
 
-    async function sendMessage() {
-      const text = inputEl.value.trim();
-      if (!text) return;
+  <footer>
+    Local AI Web Helper &mdash; Early preview
+  </footer>
 
-      // Show user message in UI
-      addMessage(text, 'user');
-
-      // Add to history
-      history.push({ role: 'user', content: text });
-
-      inputEl.value = '';
-      inputEl.focus();
-
-      try {
-        const res = await fetch('/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text, history }),
-        });
-
-        const data = await res.json();
-        if (data.reply) {
-          addMessage(data.reply, 'bot');
-          history.push({ role: 'assistant', content: data.reply });
-        } else {
-          addMessage('Error: no reply from server.', 'bot');
-        }
-      } catch (err) {
-        console.error(err);
-        addMessage('Error contacting server.', 'bot');
-      }
-    }
-
-    sendBtn.addEventListener('click', sendMessage);
-    inputEl.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') sendMessage();
-    });
-
-    // Greet user on load and add to history
-    const greeting =
-      "Hi! I'm the John's Plumbing assistant. Tell me your plumbing issue, and I'll help schedule a visit.\nI'll need your name, phone number, zip code, and a brief description of the problem.";
-    addMessage(greeting, 'bot');
-    history.push({ role: 'assistant', content: greeting });
+  <!-- Live widget demo on this page -->
+  <script
+    src="https://local-ai-helper.onrender.com/widget.js"
+    data-site-id="demo-plumber">
   </script>
 </body>
 </html>
