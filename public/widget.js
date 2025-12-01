@@ -4,11 +4,9 @@
   var currentScript = scripts[scripts.length - 1];
   var siteId = currentScript.getAttribute('data-site-id') || 'default';
 
-  // Get API base from the script URL (e.g. https://your-app.onrender.com/widget.js)
+  // Derive API base from script src: e.g. https://your-app.onrender.com/widget.js -> https://your-app.onrender.com
   var scriptSrc = currentScript.src;
-  var API_BASE = scriptSrc.split('/').slice(0, 3).join('/'); // protocol + host
-
-
+  var API_BASE = scriptSrc.split('/').slice(0, 3).join('/');
 
   // ---- Styles ----
   var style = document.createElement('style');
@@ -36,7 +34,7 @@
     + '  right: 20px;'
     + '  width: 330px;'
     + '  height: 450px;'
-    + '  background: white;'
+    + '  background: #ffffff;'
     + '  border-radius: 12px;'
     + '  display: none;'
     + '  flex-direction: column;'
@@ -192,12 +190,12 @@
     } else {
       windowEl.style.display = 'flex';
 
+      // First open: send greeting
       if (history.length === 0) {
-  var greet = "Hi! I'm the assistant for this business. Tell me what you need help with and I'll collect your details and help schedule a visit.";
-  addMessage(greet, 'bot');
-  history.push({ role: 'assistant', content: greet });
-}
-
+        var greet = "Hi! I'm the assistant for this business. Tell me what you need help with and I'll collect your details and help schedule a visit.";
+        addMessage(greet, 'bot');
+        history.push({ role: 'assistant', content: greet });
+      }
     }
   });
 
