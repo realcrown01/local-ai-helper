@@ -340,7 +340,8 @@ GENERAL BEHAVIOR:
       });
 
       if (lead.name && lead.phone) {
-        const leadFileName = biz.leadFile || 'leads_default.json';
+        const leadFileName = biz.leadFile || `leads_${siteId}.json`;
+
         saveLead(lead, leadFileName);
       } else {
         console.log('⚠️ Lead line found, but missing name or phone:', lead);
