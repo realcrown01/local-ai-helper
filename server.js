@@ -183,13 +183,6 @@ function renderLeadsHTML(leads, biz, siteId) {
 
 // ---------- Leads dashboard route ----------
 app.get('/admin/leads', (req, res) => {
-    // ---- Secure dashboard per business via their own token ----
-const token = req.query.token;
-if (!biz || token !== biz.token) {
-  return res.status(403).send("Access denied. Invalid token for this business.");
-}
-
-
   const siteId = req.query.siteId || 'demo-plumber';
   const biz = businesses[siteId];
 
@@ -197,6 +190,12 @@ if (!biz || token !== biz.token) {
     return res
       .status(404)
       .send(`Unknown business for siteId "${siteId}". Check businesses.json.`);
+  }
+
+  // ---- Per-business token security ----
+  const token = req.query.token;
+  if (!biz.token || token !== biz.token) {
+    return res.status(403).send('Access denied. Invalid token for this business.');
   }
 
   const leadFileName = biz.leadFile || `leads_${siteId}.json`;
@@ -215,6 +214,7 @@ if (!biz || token !== biz.token) {
   const html = renderLeadsHTML(leads, biz, siteId);
   res.send(html);
 });
+
 
 // ---------- /chat endpoint ----------
 app.post('/chat', async (req, res) => {

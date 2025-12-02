@@ -1,22 +1,21 @@
 {
-  "demo-plumber": {
-    "name": "John's Plumbing",
-    "location": "Springfield, AnyState",
-    "services": ["Drain cleaning", "Pipe repair", "Water heater repair"],
-    "pricing": { "general": "Pricing after inspection" },
-    "hours": "Mon–Sat 8am–6pm",
-    "rules": ["Don't promise things we don't do"],
-    "leadFile": "leads_demo_plumber.json",
-    "token": "plumber12345"
-  },
-
   "johns-plumbing-nyc": {
     "name": "John's Plumbing NYC",
     "location": "NYC",
-    "services": ["Drain cleaning", "Pipe repair", "Water heater repair"],
-    "pricing": { "general": "Pricing after inspection" },
+    "services": [
+      "Drain cleaning",
+      "Pipe repair",
+      "Water heater repair"
+    ],
+    "pricing": {
+      "general": "Exact pricing is provided after a technician inspects the issue."
+    },
     "hours": "Mon–Sun 8am–8pm",
-    "rules": ["Don't offer services not listed"],
+    "rules": [
+      "Do not promise exact prices over chat.",
+      "Do not promise services that are not listed.",
+      "If unsure, ask them to call the office."
+    ],
     "leadFile": "leads_johns_plumbing_nyc.json",
     "token": "nyc88321"
   }
