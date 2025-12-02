@@ -81,13 +81,14 @@ app.get('/health', (req, res) => {
 
 // ---------- Leads dashboard HTML helper ----------
 function renderLeadsHTML(leads, biz, siteId) {
-    const timezone = biz.timezone || 'America/New_York';
+  // Use business-specific timezone if provided, otherwise default
+  const timezone = biz.timezone || 'America/New_York';
 
   const formatDate = (isoString) => {
     try {
       return new Date(isoString).toLocaleString('en-US', {
         timeZone: timezone,
-        month: 'short',
+        month: 'short',  // Jan, Feb, etc.
         day: 'numeric',
         year: 'numeric',
         hour: 'numeric',
@@ -107,8 +108,38 @@ function renderLeadsHTML(leads, biz, siteId) {
           <td>${lead.zip || ''}</td>
           <td>${lead.issue || ''}</td>
           <td>${lead.createdAt ? formatDate(lead.createdAt) : ''}</td>
-
         </tr>
+      `;
+    })
+    .join('');
+
+  const cards = leads
+    .map((lead) => {
+      return `
+        <div class="lead-card">
+          <div class="lead-card-row">
+            <span class="lead-label">Name</span>
+            <span class="lead-value">${lead.name || ''}</span>
+          </div>
+          <div class="lead-card-row">
+            <span class="lead-label">Phone</span>
+            <span class="lead-value">${lead.phone || ''}</span>
+          </div>
+          <div class="lead-card-row">
+            <span class="lead-label">Zip</span>
+            <span class="lead-value">${lead.zip || ''}</span>
+          </div>
+          <div class="lead-card-row">
+            <span class="lead-label">Issue</span>
+            <span class="lead-value">${lead.issue || ''}</span>
+          </div>
+          <div class="lead-card-row">
+            <span class="lead-label">Date</span>
+            <span class="lead-value">${
+              lead.createdAt ? formatDate(lead.createdAt) : ''
+            }</span>
+          </div>
+        </div>
       `;
     })
     .join('');
@@ -119,48 +150,114 @@ function renderLeadsHTML(leads, biz, siteId) {
     <head>
       <meta charset="UTF-8" />
       <title>Leads - ${biz.name}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
       <style>
         body {
           font-family: Arial, sans-serif;
           max-width: 900px;
-          margin: 40px auto;
+          margin: 20px auto 40px;
+          padding: 0 12px;
+          color: #111827;
+          background: #f9fafb;
         }
         h1 {
           margin-bottom: 5px;
+          font-size: 22px;
         }
         .subtitle {
-          color: #666;
-          margin-bottom: 20px;
+          color: #6b7280;
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+        .site-id {
+          font-size: 12px;
+          color: #9ca3af;
+          margin-bottom: 16px;
+        }
+        .timezone-note {
+          font-size: 12px;
+          color: #6b7280;
+          margin-bottom: 16px;
+        }
+
+        .no-leads {
+          margin-top: 20px;
+          color: #6b7280;
+          font-size: 14px;
+        }
+        .hint {
+          font-size: 12px;
+          color: #6b7280;
+          margin-top: 16px;
+        }
+
+        /* Desktop table */
+        .table-container {
+          margin-top: 16px;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+          background: #ffffff;
         }
         table {
           width: 100%;
           border-collapse: collapse;
-        }
-        th, td {
-          border: 1px solid #ddd;
-          padding: 8px;
           font-size: 14px;
         }
+        th, td {
+          border-bottom: 1px solid #e5e7eb;
+          padding: 8px 10px;
+        }
         th {
-          background: #f5f5f5;
+          background: #f3f4f6;
           text-align: left;
+          font-weight: 600;
+          color: #374151;
         }
-        tr:nth-child(even) {
-          background: #fafafa;
+        tr:nth-child(even) td {
+          background: #f9fafb;
         }
-        .no-leads {
-          margin-top: 20px;
-          color: #888;
-        }
-        .site-id {
-          font-size: 13px;
-          color: #999;
-          margin-bottom: 20px;
-        }
-        .hint {
-          font-size: 12px;
-          color: #777;
+
+        /* Mobile card layout */
+        .lead-card-list {
+          display: none;
           margin-top: 12px;
+        }
+        .lead-card {
+          background: #ffffff;
+          border-radius: 10px;
+          padding: 10px 12px;
+          margin-bottom: 10px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        .lead-card-row {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 4px;
+        }
+        .lead-label {
+          font-size: 12px;
+          color: #6b7280;
+          margin-right: 8px;
+        }
+        .lead-value {
+          font-size: 13px;
+          font-weight: 500;
+          color: #111827;
+          text-align: right;
+        }
+
+        /* Responsive behavior */
+        @media (max-width: 700px) {
+          .table-container {
+            display: none;
+          }
+          .lead-card-list {
+            display: block;
+          }
+          body {
+            margin-top: 16px;
+          }
         }
       </style>
     </head>
@@ -168,25 +265,36 @@ function renderLeadsHTML(leads, biz, siteId) {
       <h1>Leads for ${biz.name}</h1>
       <div class="site-id">siteId: <code>${siteId}</code></div>
       <div class="subtitle">${biz.location}</div>
+      <div class="timezone-note">
+        Times shown in local timezone: <strong>${timezone}</strong>
+      </div>
 
       ${
         leads.length === 0
           ? '<div class="no-leads">No leads yet for this business.</div>'
           : `
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Zip</th>
-              <th>Issue</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows}
-          </tbody>
-        </table>
+        <!-- Desktop table -->
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Zip</th>
+                <th>Issue</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile cards -->
+        <div class="lead-card-list">
+          ${cards}
+        </div>
       `
       }
 
@@ -198,6 +306,7 @@ function renderLeadsHTML(leads, biz, siteId) {
     </html>
   `;
 }
+
 
 // ---------- Leads dashboard route ----------
 app.get('/admin/leads', (req, res) => {
