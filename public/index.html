@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Local AI Web Helper</title>
+  <title>AI Web Helper</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
@@ -82,47 +82,138 @@
     .cta:hover {
       background: #1d4ed8;
     }
+    .cta-secondary {
+      display: inline-block;
+      background: #0f172a;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .cta-secondary:hover {
+      background: #020617;
+    }
     footer {
       text-align: center;
       font-size: 12px;
       color: #6b7280;
       padding: 20px 0 30px;
     }
+    footer a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Contact form + scheduling */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-grid-full {
+      grid-column: 1 / -1;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 4px;
+      color: #374151;
+    }
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .btn-submit {
+      display: inline-block;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-submit:hover {
+      background: #1d4ed8;
+    }
+    .small-note {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+    }
+    .schedule-box {
+      background: #eff6ff;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 14px;
+      border: 1px solid #bfdbfe;
+    }
+    .schedule-box a {
+      color: #2563eb;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .schedule-box a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <div class="logo">Local AI Web Helper</div>
+      <div class="logo">AI Web Helper</div>
     </div>
   </header>
 
   <main>
     <div class="container">
+
+      <!-- Hero / CTA section -->
       <div class="section">
-  <h1>24/7 AI Website Assistant for Local Service Businesses</h1>
-  <div class="subtitle">
-    Turn website visitors into booked jobs. Capture name, phone, location, and issue
-    automatically, and send warm leads straight to the business.
-  </div>
-  <div>
-    <span class="pill">Plumbers</span>
-    <span class="pill">Roofers</span>
-    <span class="pill">HVAC</span>
-    <span class="pill">Electricians</span>
-    <span class="pill">Any local service</span>
-  </div>
+        <h1>24/7 AI Website Assistant for Local Service Businesses</h1>
+        <div class="subtitle">
+          Turn website visitors into leads. Capture name, phone, location, and issue
+          automatically, and send warm leads straight to the business.
+        </div>
+        <div>
+          <span class="pill">Plumbers</span>
+          <span class="pill">Roofers</span>
+          <span class="pill">HVAC</span>
+          <span class="pill">Electricians</span>
+          <span class="pill">Any local service</span>
+        </div>
 
-  <!-- Buttons row -->
-  <div style="margin-top: 16px; display:flex; flex-wrap:wrap; gap:10px;">
-    <a class="cta" href="#demo">🧪 Try the live chat demo</a>
-    <a class="cta" href="/admin/leads?siteId=demo-plumber" style="background:#0f172a;">
-      📊 View demo leads dashboard
-    </a>
-  </div>
-</div>
+        <!-- Primary actions -->
+        <div style="margin-top: 16px; display:flex; flex-wrap:wrap; gap:10px;">
+          <a class="cta" href="#demo">🧪 Try the live chat demo</a>
+          <!-- Book a demo goes to scheduling section -->
+          <a class="cta-secondary" href="#schedule">
+            📅 Book a 10-minute demo
+          </a>
+          <!-- Direct link to demo dashboard -->
+          <a class="cta-secondary" href="/admin/leads?siteId=demo-plumber" style="background:#16a34a;">
+            📊 View demo leads dashboard
+          </a>
+        </div>
+      </div>
 
-
+      <!-- How it works -->
       <div class="section">
         <h2>How it works</h2>
         <ul>
@@ -133,12 +224,14 @@
         </ul>
       </div>
 
+      <!-- Live demo section -->
       <div class="section" id="demo">
         <h2>Live demo: John's Plumbing</h2>
         <p>Use the chat bubble in the bottom-right corner to talk to the assistant as if you were a customer.</p>
-        <p>Ask something like: “My name is Alex, my phone is 555-555-5555, I'm in zip 12345, and I have a leaking pipe under my kitchen sink.”</p>
+        <p>Try something like: “My name is Alex, my phone is 555-555-5555, I'm in zip 12345, and I have a leaking pipe under my kitchen sink.”</p>
       </div>
 
+      <!-- Install snippet -->
       <div class="section">
         <h2>Install on any website with one script</h2>
         <p>Drop this snippet into your site’s HTML, just before <code>&lt;/body&gt;</code>:</p>
@@ -153,23 +246,70 @@
         </p>
       </div>
 
-      <div class="section">
-  <h2>Interested?</h2>
-  <p>If you're a local business owner and want this added to your website, reach out and we can set up a demo and installation.</p>
+      <!-- Scheduling + Contact -->
+      <div class="section" id="schedule">
+        <h2>Book a demo or get in touch</h2>
+        <p>
+          Want this on your website? Book a quick demo or send me your details and I'll reply personally.
+        </p>
 
-  <p style="margin-top: 12px; font-size: 15px;">
-    📩 <strong>Email me:</strong> 
-    <a href="mailto:nishiokaservices@gmail.com" style="color:#2563eb; text-decoration:none;">
-      nishiokaservices@gmail.com
-    </a>
-  </p>
-</div>
+        <!-- Scheduling box (Calendly-style link) -->
+        <div class="schedule-box">
+          <strong>📅 Quick demo call</strong><br />
+          Pick a time that works for you and I'll walk you through a live demo and setup.
+          <br /><br />
+          <!-- Replace this link with your real Calendly (or other scheduling) URL -->
+          <a href="https://nishiokaservices.setmore.com/services/cbc88d43-08de-4022-a8b3-577add493d5c" target="_blank" rel="noopener noreferrer">
+            👉 Book a 10-minute demo
+          </a>
+        </div>
+
+        <p class="small-note">
+          Don’t want to book a time yet? Use the contact form below and I’ll reach out.
+        </p>
+
+        <!-- Contact form -->
+        <form
+          action="mailto:nishiokaservices@gmail.com"
+          method="post"
+          enctype="text/plain"
+        >
+          <div class="form-grid">
+            <div>
+              <label for="name">Your name</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            <div>
+              <label for="email">Your email</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            <div>
+              <label for="business">Business name</label>
+              <input type="text" id="business" name="business" />
+            </div>
+            <div>
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" placeholder="https://..." />
+            </div>
+            <div class="form-grid-full">
+              <label for="message">What do you need help with?</label>
+              <textarea id="message" name="message" placeholder="Tell me about your business and your website..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit">Send message</button>
+          <div class="small-note">
+            This will open your email app with the details pre-filled to send to me.
+          </div>
+        </form>
+      </div>
 
     </div>
   </main>
 
   <footer>
-    Local AI Web Helper &mdash; Early preview
+    Local AI Web Helper — Early preview<br />
+    📩 Contact: 
+    <a href="mailto:nishiokaservices@gmail.com">nishiokaservices@gmail.com</a>
   </footer>
 
   <!-- Live widget demo on this page -->
