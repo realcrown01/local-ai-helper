@@ -111,6 +111,7 @@
   </style>
 </head>
 <body>
+
   <header>
     <div class="container">
       <div class="logo">AI Web Helper</div>
@@ -127,6 +128,7 @@
           Turn website visitors into leads. Capture name, phone, location, and issue
           automatically, and send warm leads straight to the business.
         </div>
+
         <div>
           <span class="pill">Plumbers</span>
           <span class="pill">Roofers</span>
@@ -138,4 +140,105 @@
         <!-- Primary actions -->
         <div style="margin-top: 16px; display:flex; flex-wrap:wrap; gap:12px;">
           
-          <!-- Big Blue Book Button -->
+          <!-- Big blue demo button -->
+          <a class="cta" href="#schedule" style="font-size:16px; padding:12px 24px; background:#2563eb;">
+            📅 Book a 10-minute demo
+          </a>
+
+          <!-- Try demo -->
+          <a class="cta-secondary" href="#demo">
+            🧪 Try the live chat demo
+          </a>
+
+          <!-- Dashboard -->
+          <a class="cta-secondary" href="/admin/leads?siteId=demo-plumber" style="background:#16a34a;">
+            📊 View demo leads dashboard
+          </a>
+        </div>
+      </div>
+
+      <!-- How it works -->
+      <div class="section">
+        <h2>How it works</h2>
+        <ul>
+          <li>AI chat widget sits on the bottom-right of your website.</li>
+          <li>It asks the right questions: name, phone, zip, and problem.</li>
+          <li>Leads are saved and visible in a simple dashboard.</li>
+          <li>Each business gets its own configuration and lead list.</li>
+        </ul>
+      </div>
+
+      <!-- Live demo section -->
+      <div class="section" id="demo">
+        <h2>Live demo: John's Plumbing</h2>
+        <p>Use the chat bubble in the bottom-right corner to talk to the assistant as if you were a customer.</p>
+        <p>Try something like: “My name is Alex, my phone is 555-555-5555, I'm in zip 12345, and I have a leaking pipe under my kitchen sink.”</p>
+      </div>
+
+      <!-- Install snippet -->
+      <div class="section">
+        <h2>Install on any website with one script</h2>
+        <p>Drop this snippet into your site’s HTML, just before <code>&lt;/body&gt;</code>:</p>
+
+        <div class="code-box">
+          &lt;script<br />
+          &nbsp;&nbsp;src="https://local-ai-helper.onrender.com/widget.js"<br />
+          &nbsp;&nbsp;data-site-id="YOUR-BUSINESS-ID"&gt;<br />
+          &lt;/script&gt;
+        </div>
+
+        <p style="font-size: 13px; color:#6b7280; margin-top:8px;">
+          Example: use <code>demo-plumber</code> or <code>roofing-pros</code> as a demo business id.
+        </p>
+      </div>
+
+      <!-- Book a demo -->
+      <div class="section" id="schedule">
+        <h2>Book a demo</h2>
+        <p>
+          Want this on your website? Book a quick 10-minute demo and I’ll walk you through a live example and show you how it works.
+        </p>
+
+        <a 
+          href="https://nishiokaservices.setmore.com/services/cbc88d43-08de-4022-a8b3-577add493d5c" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style="
+            display: block;
+            background: #2563eb;
+            padding: 16px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+          "
+        >
+          📅 Book a 10-minute demo
+        </a>
+
+        <p style="font-size: 14px; color:#6b7280; margin-top: 12px;">
+          You’ll be taken to my scheduling page to pick a time.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    AI Web Helper — Early preview<br />
+    📩 Contact: 
+    <a href="mailto:nishiokaservices@gmail.com">nishiokaservices@gmail.com</a>
+  </footer>
+
+  <!-- Live widget demo -->
+  <script
+    src="https://local-ai-helper.onrender.com/widget.js"
+    data-site-id="demo-plumber">
+  </script>
+
+</body>
+</html>
