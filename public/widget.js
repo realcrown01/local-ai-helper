@@ -207,23 +207,29 @@
   document.body.appendChild(bubble);
   document.body.appendChild(windowEl);
 
-  // ---- Popup logic (ONCE PER VISITOR) ----
+  // ---- Popup logic (once per visitor, delayed) ----
   if (!localStorage.getItem("ai_popup_dismissed")) {
-    document.body.appendChild(notify);
+    // show after 2 seconds
+    setTimeout(function () {
+      // Check again in case they already opened chat quickly
+      if (localStorage.getItem("ai_popup_dismissed")) return;
 
-    var notifyClose = notify.querySelector('.ai-notify-close');
-    notifyClose.addEventListener('click', function () {
-      notify.remove();
-      localStorage.setItem("ai_popup_dismissed", "true");
-    });
+      document.body.appendChild(notify);
 
-    // Auto-hide after 7 seconds
-    setTimeout(() => {
-      if (notify.parentNode) {
-        notify.remove();
+      var notifyClose = notify.querySelector('.ai-notify-close');
+      notifyClose.addEventListener('click', function () {
+        if (notify.parentNode) notify.remove();
         localStorage.setItem("ai_popup_dismissed", "true");
-      }
-    }, 7000);
+      });
+
+      // Auto-hide after 7 seconds
+      setTimeout(function () {
+        if (notify.parentNode) {
+          notify.remove();
+          localStorage.setItem("ai_popup_dismissed", "true");
+        }
+      }, 7000);
+    }, 2000);
   }
 
   // ---- Chat logic ----
@@ -255,8 +261,8 @@
         siteId: siteId
       })
     })
-    .then(res => res.json())
-    .then(data => {
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
       if (data && data.reply) {
         addMessage(data.reply, 'bot');
         history.push({ role: 'assistant', content: data.reply });
@@ -264,7 +270,7 @@
         addMessage('Error: No reply from server.', 'bot');
       }
     })
-    .catch(err => {
+    .catch(function (err) {
       console.error(err);
       addMessage('Error contacting server.', 'bot');
     });
@@ -273,13 +279,15 @@
   // ---- Events ----
   bubble.addEventListener('click', function () {
     localStorage.setItem("ai_popup_dismissed", "true");
-    if (notify && notify.parentNode) notify.remove();
+
+    if (notify && notify.parentNode) {
+      notify.remove();
+    }
 
     windowEl.style.display = 'flex';
 
     if (history.length === 0) {
-      var greet =
-        "Hi! I'm the assistant for this business. Tell me what you need help with.";
+      var greet = "Hi! I'm the assistant for this business. Tell me what you need help with.";
       addMessage(greet, 'bot');
       history.push({ role: 'assistant', content: greet });
     }
