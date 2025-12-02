@@ -78,6 +78,7 @@ function saveLead(lead, leadFileName) {
 app.get('/health', (req, res) => {
   res.send('OK');
 });
+
 // ---------- Leads dashboard HTML helper ----------
 function renderLeadsHTML(leads, biz, siteId) {
   const rows = leads
@@ -179,6 +180,7 @@ function renderLeadsHTML(leads, biz, siteId) {
     </html>
   `;
 }
+
 // ---------- Leads dashboard route ----------
 app.get('/admin/leads', (req, res) => {
   const siteId = req.query.siteId || 'demo-plumber';
@@ -212,7 +214,7 @@ app.post('/chat', async (req, res) => {
   try {
     const userMessage = req.body.message;
     const history = req.body.history || [];
-    const siteId = req.body.siteId || 'demo-plumber'; // <---- req is valid HERE
+    const siteId = req.body.siteId || 'demo-plumber';
 
     if (!userMessage) {
       return res.status(400).json({ error: 'No message provided.' });
@@ -222,19 +224,19 @@ app.post('/chat', async (req, res) => {
     if (!biz) {
       console.log(`⚠️ No business found for siteId: ${siteId}`);
       return res.json({
-        reply: "Sorry, this business is not configured yet.",
+        reply: 'Sorry, this business is not configured yet.',
       });
     }
 
     // Build business info text from the JSON
     const businessInfo = `
 Business name: ${biz.name}
-Location: ${biz.location}
+Location / service area: ${biz.location}
 
-Services:
+Services (ONLY these are guaranteed):
 ${biz.services.map((s) => '- ' + s).join('\n')}
 
-Pricing:
+Pricing (rough guidance, never quote exact unless clearly stated):
 ${Object.entries(biz.pricing)
   .map(([k, v]) => `- ${v}`)
   .join('\n')}
@@ -242,48 +244,59 @@ ${Object.entries(biz.pricing)
 Hours:
 ${biz.hours}
 
-Rules:
+Rules / Notes:
 ${biz.rules.map((r) => '- ' + r).join('\n')}
     `;
 
     const systemPrompt = `
-You are an AI assistant for a local service business.
+You are the website assistant for a LOCAL SERVICE BUSINESS.
 
-You are given the full conversation history between the assistant and the customer.
-Before replying, carefully read the conversation history and figure out what details
-you already know about the customer.
+BUSINESS INFO (SOURCE OF TRUTH):
+${businessInfo}
 
-Your goals:
+VERY IMPORTANT RULES — DO NOT BREAK THESE:
+1. You MUST NOT say the business offers a service if it is not clearly included in the "Services" list above.
+2. If the user asks about something that is not obviously part of those services, you MUST respond cautiously, for example:
+   - "From what I can see, we focus on: ${biz.services.join(
+     ', '
+   )}. I don't see that specific service listed, so we may not offer it. Please call the office to confirm."
+3. DO NOT invent or promise:
+   - Extra services
+   - Special warranties
+   - Financing
+   - New locations
+   - Exact prices that are not clearly given in the info above
+4. Only mention same-day or emergency service IF the business info or rules clearly mention it (e.g. if "emergency" or "same-day" is in services or rules). If it is not explicitly listed, do NOT talk about same-day or emergency promises.
+5. If you're unsure whether something is offered, say you're not sure and suggest they call or that someone from the team will confirm.
 
+CONVERSATION GOALS:
+- Be friendly, concise, and professional.
+- Help visitors understand what the business can do based ONLY on the info above.
+- Your main goal is to turn visitors into leads.
+
+LEAD COLLECTION:
 1. Collect these four details (if missing):
    - customer's name
    - phone number
    - address or zip code
    - short description of the issue
-
 2. Only ask for details that are STILL missing.
    - If you already know their name from earlier messages, DO NOT ask for it again.
    - If you already know their phone from earlier messages, DO NOT ask for it again.
    - Same for zip/address and issue description.
-
-3. Once you have ALL FOUR items (name, phone, zip/address, issue):
-   - Confirm their details briefly.
-   - Move the conversation toward scheduling (e.g., same-day or specific time).
-   - DO NOT ask again for details you already know.
+3. Once you have ALL FOUR items:
+   - Briefly confirm their details.
+   - Move the conversation toward scheduling (time, day, etc.), being careful NOT to promise same-day/emergency unless clearly allowed.
    - On the LAST line of your reply, add a hidden machine-readable summary in format like:
        LEAD: name=John Smith | phone=555-555-5555 | zip=12345 | issue=clogged drain in kitchen
      or at least:
        name=John Smith | phone=555-555-5555 | zip=12345 | issue=clogged drain in kitchen
-   - Do NOT explain this LEAD line.
-   - The user should NOT see the word "LEAD" as part of their normal conversation.
+   - Do NOT explain this LEAD line. The user should not see it as something special.
 
-4. If you are not sure about something, say that you'll pass the details to the team.
-5. Be friendly, concise, and focused on helping them get service.
-
-Business info (use this for answering questions about services, pricing, hours, etc.):
-${businessInfo}
-
-Current site id (for your context only): ${siteId}
+GENERAL BEHAVIOR:
+- If you do not know something from the business info, say you are not sure and suggest calling the business.
+- If the user asks "what do you do" or "what kind of business is this", answer ONLY using the Services and other info above.
+- Keep responses short and helpful, focused on solving their problem and capturing the lead details.
     `;
 
     const messages = [
