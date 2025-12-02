@@ -183,6 +183,12 @@ function renderLeadsHTML(leads, biz, siteId) {
 
 // ---------- Leads dashboard route ----------
 app.get('/admin/leads', (req, res) => {
+    // ---- Simple admin token security ----
+  const token = req.query.token;
+  if (!process.env.ADMIN_TOKEN || token !== process.env.ADMIN_TOKEN) {
+    return res.status(403).send('Forbidden: Invalid or missing admin token.');
+  }
+
   const siteId = req.query.siteId || 'demo-plumber';
   const biz = businesses[siteId];
 
