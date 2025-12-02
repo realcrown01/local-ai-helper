@@ -4,14 +4,13 @@
   var currentScript = scripts[scripts.length - 1];
   var siteId = currentScript.getAttribute('data-site-id') || 'default';
 
-  // API base URL (derived from widget.js src)
+  // API base URL
   var scriptSrc = currentScript.src;
   var API_BASE = scriptSrc.split('/').slice(0, 3).join('/');
 
   // ---- Styles ----
   var style = document.createElement('style');
   style.textContent = `
-    /* Chat Bubble */
     .ai-bubble {
       position: fixed;
       bottom: 20px;
@@ -32,7 +31,6 @@
       box-sizing: border-box;
     }
 
-    /* Pulsing Glow */
     .ai-bubble::after {
       content: "";
       position: absolute;
@@ -49,7 +47,6 @@
       100% { transform: scale(0.85); opacity: 0; }
     }
 
-    /* Notification popup */
     .ai-notify {
       position: fixed;
       bottom: 100px;
@@ -79,7 +76,6 @@
       margin-left: 6px;
     }
 
-    /* Chat window */
     .ai-window {
       position: fixed;
       bottom: 100px;
@@ -210,22 +206,28 @@
 
   document.body.appendChild(bubble);
   document.body.appendChild(windowEl);
-  document.body.appendChild(notify);
 
-  var closeBtn = header.querySelector('.ai-close');
-  var notifyClose = notify.querySelector('.ai-notify-close');
+  // ---- Popup logic (ONCE PER VISITOR) ----
+  if (!localStorage.getItem("ai_popup_dismissed")) {
+    document.body.appendChild(notify);
 
-  // ---- Notification close logic ----
-  notifyClose.addEventListener('click', function () {
-    notify.remove();
-  });
+    var notifyClose = notify.querySelector('.ai-notify-close');
+    notifyClose.addEventListener('click', function () {
+      notify.remove();
+      localStorage.setItem("ai_popup_dismissed", "true");
+    });
 
-  // Auto-hide notification after 7 seconds
-  setTimeout(() => {
-    if (notify.parentNode) notify.remove();
-  }, 7000);
+    // Auto-hide after 7 seconds
+    setTimeout(() => {
+      if (notify.parentNode) {
+        notify.remove();
+        localStorage.setItem("ai_popup_dismissed", "true");
+      }
+    }, 7000);
+  }
 
   // ---- Chat logic ----
+  var closeBtn = header.querySelector('.ai-close');
   var history = [];
 
   function addMessage(text, sender) {
@@ -268,9 +270,11 @@
     });
   }
 
-  // ---- Open chat window ----
+  // ---- Events ----
   bubble.addEventListener('click', function () {
-    notify.remove(); // hide popup if bubble clicked
+    localStorage.setItem("ai_popup_dismissed", "true");
+    if (notify && notify.parentNode) notify.remove();
+
     windowEl.style.display = 'flex';
 
     if (history.length === 0) {
