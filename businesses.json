@@ -17,6 +17,7 @@
       "If unsure, ask them to call the office."
     ],
     "leadFile": "leads_johns_plumbing_nyc.json",
-    "token": "nyc88321"
+    "token": "nyc88321",
+    "timezone": "America/New_York"
   }
 }

@@ -81,6 +81,23 @@ app.get('/health', (req, res) => {
 
 // ---------- Leads dashboard HTML helper ----------
 function renderLeadsHTML(leads, biz, siteId) {
+    const timezone = biz.timezone || 'America/New_York';
+
+  const formatDate = (isoString) => {
+    try {
+      return new Date(isoString).toLocaleString('en-US', {
+        timeZone: timezone,
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+    } catch {
+      return isoString || '';
+    }
+  };
+
   const rows = leads
     .map((lead) => {
       return `
@@ -89,7 +106,8 @@ function renderLeadsHTML(leads, biz, siteId) {
           <td>${lead.phone || ''}</td>
           <td>${lead.zip || ''}</td>
           <td>${lead.issue || ''}</td>
-          <td>${lead.createdAt ? new Date(lead.createdAt).toLocaleString() : ''}</td>
+          <td>${lead.createdAt ? formatDate(lead.createdAt) : ''}</td>
+
         </tr>
       `;
     })
